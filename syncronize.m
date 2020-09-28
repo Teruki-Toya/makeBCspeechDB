@@ -29,7 +29,9 @@ x = zeros(length(rdInf), length(x0));
 
 d = zeros(length(rdInf), 1);    % ラグサンプル数
 % タイムラグ調整
-mkdir(['1_syncData/', Cond])    % 調整済データ用ディレクトリ
+destDir = ['1_syncData/', Nm_folder, '/', Cond];
+mkdir(['1_syncData/', Nm_folder]);
+mkdir(destDir)    % 調整済データ用ディレクトリ
 for n = 1 : length(rdInf)
     [x_tmp, ~] = audioread([Nm_folder, '/', rdInf(n).name]);
     if size(x_tmp, 1) > 3
@@ -65,10 +67,10 @@ for n = 1 : length(rdInf)
     
     x(n, :) = x_tmp; % 一括処理できるように、ひとつの変数に格納
     % オーディオ書き出し
-    audiowrite(['1_syncData/', Cond, '/', rdInf(n).name(1:end-4),...
+    audiowrite([destDir, '/', rdInf(n).name(1:end-4),...
                                 '_o.wav'], x_tmp, fs)
 end
-save([['1_syncData/', Cond], '/dAll.mat'], 'x', 'fs')
+save([destDir, '/dAll.mat'], 'x', 'fs')
 
 %% プロット
 tau = (0 : length(x0) - 1) ./ fs;
