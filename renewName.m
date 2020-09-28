@@ -11,6 +11,9 @@
 
 clear
 
+mkdir 1_syncData
+mkdir 2_cutData
+
 % 事前に指定
 % -------------------
 Nm_folder = 's01';  % 収録話者（'s01' ~ 's10'）
