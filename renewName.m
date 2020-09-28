@@ -16,7 +16,7 @@ mkdir 2_cutData
 
 % 事前に指定
 % -------------------
-Nm_folder = 's01';  % 収録話者（'s01' ~ 's10'）
+Nm_folder = 's02';  % 収録話者（'s01' ~ 's10'）
 % -------------------
 
 if strcmp(Nm_folder, 's10') == 1
@@ -25,12 +25,19 @@ else
     addNm = [Nm_folder(1), Nm_folder(3)];
 end
 
+%% 母音データの隔離
+mkdir([Nm_folder, '/aiu'])
+dInf = dir([Nm_folder, '/aiu*.wav']);
+for n = 1 : length(dInf)
+    movefile([Nm_folder, '/', dInf(n).name], [Nm_folder, '/aiu']);
+end
+
 %% AClip 関連の名前変更
 objct = 'AClip';
 dInf = dir([Nm_folder, '/*', objct, '*.wav']);
 for n = 1 : length(dInf)
-    Nm_f = dInf(n).name(1:11);
-    Nm_l = dInf(n).name(12:end);
+    Nm_f = dInf(n).name(1:9);
+    Nm_l = dInf(n).name(10:end);
     movefile([Nm_folder, '/', dInf(n).name],...
                     [Nm_folder '/', Nm_f, addNm, '_', Nm_l]);
 end
@@ -40,8 +47,8 @@ clear objct dInf
 objct = 'ACneck';
 dInf = dir([Nm_folder, '/*', objct, '*.wav']);
 for n = 1 : length(dInf)
-    Nm_f = dInf(n).name(1:11);
-    Nm_l = dInf(n).name(12:end);
+    Nm_f = dInf(n).name(1:9);
+    Nm_l = dInf(n).name(10:end);
     movefile([Nm_folder, '/', dInf(n).name],...
                     [Nm_folder '/', Nm_f, addNm, '_', Nm_l]);
 end
@@ -51,19 +58,12 @@ clear objct dInf
 objct = 'HG70';
 dInf = dir([Nm_folder, '/*', objct, '*.wav']);
 for n = 1 : length(dInf)
-    Nm_f = dInf(n).name(1:11);
-    Nm_l = dInf(n).name(12:end);
+    Nm_f = dInf(n).name(1:9);
+    Nm_l = dInf(n).name(10:end);
     movefile([Nm_folder, '/', dInf(n).name],...
                     [Nm_folder '/', Nm_f, addNm, '_', Nm_l]);
 end
 clear objct dInf
-
-%% 母音データの隔離
-mkdir([Nm_folder, '/aiu'])
-dInf = dir([Nm_folder, '/aiu*.wav']);
-for n = 1 : length(dInf)
-    movefile([Nm_folder, '/', dInf(n).name], [Nm_folder, '/aiu']);
-end
 
 %% 話者インデックスの表記を訂正
 if length(addNm) == 2
