@@ -10,9 +10,9 @@ clear
 
 % 事前に指定
 % ---------------
-Nm_folder = 's02'; % 収録話者（'s01' ~ 's10'）
-Pg = 'Page1'; % ページごとに分割されている場合
-Cond = 'nn'; % 条件（'nn', '55', '65', '75'）
+Nm_folder = 'cn1'; % 収録話者（'s01' ~ 's10'）
+% Pg = 'Page1'; % ページごとに分割されている場合
+Cond = '55'; % 条件（'nn', '55', '65', '75'）
 % 収録がページごとに分割されている場合、
 % 下記にページの最初のコマンド番号を指定する
 % 通常は '1' でよい
@@ -33,10 +33,17 @@ destDir = ['2_cutData/', Nm_folder, '/', Cond];
 mkdir(['2_cutData/', Nm_folder])
 mkdir(destDir)
 % 一括切り出し処理
+Icom = init;
 for n = 1 : length(Pcut) - 1
     xc = x(:, Pcut(n) : Pcut(n + 1));   % 切り出されたデータ
-    Icom = init + n - 1;    % 音声コマンド番号
-    if Icom < 10    % w01 ~ w09 の処理
+    % Icom = init + n - 1;    % 音声コマンド番号
+    if (Icom == 19) || (Icom == 33) || (Icom == 43)
+        Icom = Icom + 1;
+    end
+    if n == 21
+        audiowrite([destDir, '/nospeech_AClip.wav'], xc(1, :), fs);
+        Icom = Icom - 1;
+    elseif Icom < 10    % w01 ~ w09 の処理
         audiowrite([destDir, '/w0', num2str(Icom),...
                         '_', Nm_folder, '_', Cond,...
                                 '_AClip.wav'], xc(1, :), fs);
@@ -93,4 +100,5 @@ for n = 1 : length(Pcut) - 1
                         '_', Nm_folder, '_', Cond,...
                                 '_ST_mixed.wav'], xc(9, :), fs);
     end
+    Icom = Icom + 1;
 end

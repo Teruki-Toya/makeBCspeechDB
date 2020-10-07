@@ -10,21 +10,21 @@ clear
 
 % 事前に指定
 % ---------------
-Nm_folder = 's02'; % 収録話者（'s01' ~ 's10'）
-Pg = 'Page1'; % ページごとに分割されている場合（'Page1', 'Page2', 'Page3'）
-Cond = 'nn';  % 条件（'nn', '55', '65', '75'）
+Nm_folder = 'cn1'; % 収録話者（'s01' ~ 's10'）
+% Pg = 'Page1'; % ページごとに分割されている場合（'Page1', 'Page2', 'Page3'）
+Cond = '55';  % 条件（'nn', '55', '65', '75'）
 % ---------------
 
 %% 
 % 基準データ（口唇）
-bfInf = dir([Nm_folder, '/', Pg, '*', Cond, '*AClip.wav']);
-[x0, fs] = audioread([Nm_folder, '/', bfInf(1).name]);
+bfInf = dir(['cn/', Nm_folder, '/*', Cond, '*AClip.wav']);
+[x0, fs] = audioread(['cn/', Nm_folder, '/', bfInf(1).name]);
 if size(x0, 1) > 3
     x0 = x0';
 end
 
 % 全データ
-rdInf = dir([Nm_folder, '/', Pg, '*', Cond, '*.wav']);
+rdInf = dir(['cn/', Nm_folder, '/*', Cond, '*.wav']);
 x = zeros(length(rdInf), length(x0));
 
 d = zeros(length(rdInf), 1);    % ラグサンプル数
@@ -33,7 +33,7 @@ destDir = ['1_syncData/', Nm_folder, '/', Cond];
 mkdir(['1_syncData/', Nm_folder]);
 mkdir(destDir)    % 調整済データ用ディレクトリ
 for n = 1 : length(rdInf)
-    [x_tmp, ~] = audioread([Nm_folder, '/', rdInf(n).name]);
+    [x_tmp, ~] = audioread(['cn/', Nm_folder, '/', rdInf(n).name]);
     if size(x_tmp, 1) > 3
         x_tmp = x_tmp';
     end
